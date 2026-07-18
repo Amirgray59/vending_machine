@@ -1,0 +1,17 @@
+
+
+services : 
+  api : 
+    build : . 
+    container_name : api 
+
+    env_file : 
+      - .env 
+
+    ports : 
+      - "${API_PORT}:${API_PORT}"
+      - "${TCP_PORT}:${TCP_PORT}"
+
+    entrypoint: /bin/sh
+    command : ./entrypoint.sh 
+  

@@ -1,0 +1,1 @@
+TCP server to controle, monitor and report from few vending machines  
