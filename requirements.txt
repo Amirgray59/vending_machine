@@ -2,3 +2,8 @@ fastapi[standard]
 uvicorn 
 pydantic 
 
+sqlalchemy
+
+asyncpg
+alembic 
+cryptography

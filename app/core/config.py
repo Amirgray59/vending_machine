@@ -17,6 +17,21 @@ class Settings(BaseSettings) :
     TCP_HOST : str = "0.0.0.0"
     TCP_PORT : int = 9000 
 
+    POSTGRES_HOST: str = "postgres"
+    POSTGRES_PORT: int = 5432
+    POSTGRES_USER: str = "rashno"
+    POSTGRES_PASS: str = "pTtQ3uU2_5bihS8xTxKV46zgfP9eE7z3"
+    POSTGRES_DB: str = "vending"
+    DATABASE_URL: str | None = None
+
+    def database_url_async(self) -> str:
+        """DSN async (asyncpg) — used by SQLAlchemy AsyncEngine."""
+        if self.DATABASE_URL:
+            return self.DATABASE_URL
+        return (
+            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+            f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
+        )
 
 
 @lru_cache
