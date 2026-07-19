@@ -32,4 +32,31 @@ services :
     ports : 
       - "${POSTGRES_PORT}:${POSTGRES_PORT}" 
 
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+
+  redis : 
+    image: redis:8-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+    env_file : 
+      - .env 
+
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
+
+volumes:
+  postgres_data:
+  redis_data:

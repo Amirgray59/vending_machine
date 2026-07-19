@@ -3,7 +3,9 @@ from app.core.logger import get_logger
 import asyncio 
 
 from contextlib import asynccontextmanager 
-from app.database.session import check_db_connection
+from app.database.session import check_db_connection, async_engine 
+from app.database.redis import close_redis , get_redis
+
 
 logger = get_logger(__name__)
 
@@ -25,8 +27,21 @@ async def lifespan(app : FastAPI) :
             "database is ok"
         )
 
+    try:
+        await get_redis().ping()
+        logger.info("startup_redis_ok")
+    except Exception as exc:
+        logger.error("startup_redis_unreachable", err=str(exc))
+
+
 
     yield
+
+    logger.info(
+        "shutting down server ... "
+    )
+
+    await async_engine.dispose() 
 
 app = FastAPI(
     lifespan=lifespan

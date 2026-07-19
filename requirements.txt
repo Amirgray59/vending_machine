@@ -10,3 +10,4 @@ cryptography
 
 logging
 structlog
+redis 

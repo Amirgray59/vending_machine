@@ -7,6 +7,9 @@ from sqlalchemy.ext.asyncio import (
 from sqlalchemy.orm import DeclarativeBase 
 
 from app.core.config import config 
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 async_engine = create_async_engine(
     config.database_url_async(), 
@@ -32,5 +35,5 @@ async def check_db_connection() -> bool:
             await conn.execute(text("SELECT 1"))
         return True
     except Exception as exc:  # pragma: no cover
-        log.error("db_connection_failed", err=str(exc))
+        logger.error("db_connection_failed", err=str(exc))
         return False

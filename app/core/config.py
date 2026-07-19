@@ -20,9 +20,19 @@ class Settings(BaseSettings) :
     POSTGRES_HOST: str = "postgres"
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str = "rashno"
-    POSTGRES_PASS: str = "pTtQ3uU2_5bihS8xTxKV46zgfP9eE7z3"
-    POSTGRES_DB: str = "vending"
+    POSTGRES_PASS: str 
+    POSTGRES_DB: str = "vending" 
     DATABASE_URL: str | None = None
+
+    REDIS_HOST: str = "redis"
+    REDIS_PORT: int = 6379
+    REDIS_DB: int = 0
+    REDIS_PASSWORD: str | None = None 
+
+    def REDIS_URL(self) -> str:
+        auth = f":{self.REDIS_PASSWORD}@" if self.REDIS_PASSWORD else ""
+        return f"redis://{auth}{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
+
 
     def database_url_async(self) -> str:
         return (
