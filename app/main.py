@@ -1,23 +1,38 @@
 from fastapi import FastAPI 
-from app.hardware.server import HardwareGateway 
+from app.core.logger import get_logger 
 import asyncio 
 
-app = FastAPI() 
+from contextlib import asynccontextmanager 
+from app.database.session import check_db_connection
 
-gateway = HardwareGateway() 
+logger = get_logger(__name__)
+
+@asynccontextmanager
+async def lifespan(app : FastAPI) : 
+    logger.info(
+        "app starting ..."
+    )
+
+    db_ok = await check_db_connection() 
+
+    if not db_ok : 
+        logger.error(
+            "database is not ok"
+        )
+
+    else : 
+        logger.info(
+            "database is ok"
+        )
 
 
-@app.on_event("startup")
-async def startup_server() : 
-    asyncio.create_task(
-        gateway.start()
-    )    
+    yield
 
-
-@app.on_event("shutdown") 
-async def shutdown_server() : 
-    await gateway.shutdownD()
+app = FastAPI(
+    lifespan=lifespan
+) 
     
+
 
 @app.get("/")
 def main() : 

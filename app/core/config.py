@@ -25,11 +25,8 @@ class Settings(BaseSettings) :
     DATABASE_URL: str | None = None
 
     def database_url_async(self) -> str:
-        """DSN async (asyncpg) — used by SQLAlchemy AsyncEngine."""
-        if self.DATABASE_URL:
-            return self.DATABASE_URL
         return (
-            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
+            f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASS}"
             f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
         )
 

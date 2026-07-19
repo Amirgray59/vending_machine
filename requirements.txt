@@ -7,3 +7,6 @@ sqlalchemy
 asyncpg
 alembic 
 cryptography
+
+logging
+structlog
